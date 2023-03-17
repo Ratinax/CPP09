@@ -7,6 +7,7 @@
 # include <vector>
 # include <cstdlib>
 # include <map>
+# include <cctype>
 
 # define WHITEENDL   std::endl << WHITE
 # define BLACK			"\033[0m\033[30m"
@@ -30,5 +31,5 @@ bool	valid_args(int argc);
 bool	open_file(std::ifstream &file, char *fileName);
 void	split(std::string str, std::string &left, std::string &right, char charset);
 bool	getDataBaseMap(std::map<std::string, float> &dataBase);
-bool	getDataInputMap(std::map<std::string, std::string> &dataInput, char *fileName);
+bool	putLines(std::map<std::string, float> &dataBase, char *fileName);
 #endif

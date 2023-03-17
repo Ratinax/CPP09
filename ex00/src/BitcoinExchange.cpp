@@ -33,7 +33,7 @@ void	split(std::string str, std::string &left, std::string &right, std::string c
 	else
 	{
 		left = str.substr(0, ind);
-		right = str.substr(ind + 1);
+		right = str.substr(ind + charset.length());
 	}
 }
 
@@ -57,7 +57,43 @@ bool	getDataBaseMap(std::map<std::string, float> &dataBase)
 	return (true);
 }
 
-bool	getDataInputMap(std::map<std::string, std::string> &dataInput, char *fileName)
+static bool wrongFormat(std::string date)
+{
+	if (date.length() != 10)
+		return (1);
+	if (date[0] != '2'
+		|| date[1] != '0'
+		|| (date[2] > '2' || date[2] < '0')
+		|| !isdigit(date[3])
+		|| date[4] != '-'
+		|| (date[5] > '1' || date[5] < '0')
+		|| !isdigit(date[6])
+		|| date[7] != '-'
+		|| (date[8] > '3' || date[8] < '0')
+		|| !isdigit(date[9]))
+		return (1);
+	return (0);
+}
+
+static bool	badDate(std::string date)
+{
+	if (wrongFormat(date))
+		return (1);
+	return (0);
+}
+
+static void	putLine(std::map<std::string, float> &dataBase, std::string date, std::string amount)
+{
+	(void) dataBase;
+	if (atof(amount.c_str()) < 0)
+		std::cout << RED << "Error" << WHITE << ": not a positive number." << WHITEENDL;
+	else if (badDate(date))
+		std::cout << RED << "Error" << WHITE << ": bad int put => " << RED << date << WHITEENDL;
+	//else
+	//	std::cout << data << " => " << amount << " = " << std::strtof(amount) * price << std::endl;
+}
+
+bool	putLines(std::map<std::string, float> &dataBase, char *fileName)
 {
 	std::ifstream	file;
 	std::string		line, date, amount;
@@ -69,7 +105,7 @@ bool	getDataInputMap(std::map<std::string, std::string> &dataInput, char *fileNa
 	{
 		split(line, date, amount, " | ");
 		if (is_first_line == 0)
-			dataInput[date] = amount;
+			putLine(dataBase, date, amount);
 		is_first_line = 0;
 	}
 	file.close();
