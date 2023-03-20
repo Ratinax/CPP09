@@ -75,10 +75,71 @@ static bool wrongFormat(std::string date)
 	return (0);
 }
 
+static bool isLeap(std::string year)
+{
+	int yearInt = std::atoi(year.c_str());
+
+	if (yearInt % 400 == 0)
+		return (1);
+	else if (yearInt % 100 == 0)
+		return (0);
+	else if (yearInt % 4 == 0)
+		return (1);
+	return (0);
+}
+
+static bool goodDayAmount(std::string year, std::string month, std::string day)
+{
+	if (month > "12" || month == "00" || day == "00")
+		return (1);
+	else if ((month == "01" || month == "03" || month == "05"
+		|| month == "07" || month == "08" || month == "10" || month == "12") && day > "31")
+		return (1);
+	else if ((month == "04" || month == "06" || month == "09"
+		|| month == "11") && day > "30")
+		return (1);
+	else if (month == "02" && isLeap(year) && day > "29")
+		return (1);
+	else if (month == "02" && !isLeap(year) && day > "28")
+		return (1);
+	return (0);
+}
+
 static bool	badDate(std::string date)
 {
 	if (wrongFormat(date))
 		return (1);
+	std::string	year, month, day, month_day;
+	split(date, year, month_day, "-");
+	split(month_day, month, day, "-");
+	return (goodDayAmount(year, month, day));
+}
+
+static float	findPrice(std::map<std::string, float> &dataBase, std::string date, std::string amount)
+{
+	float		price;
+	std::string	dateDataBase, priceDataBase;
+	std::map<std::string, float>::iterator it = dataBase.begin();
+
+	if (it->first > date)
+	{
+		price = it->second;
+		return (std::strtof(amount.c_str(), NULL) * price);
+	}
+	for (std::map<std::string, float>::iterator it = dataBase.begin();
+		it != dataBase.end(); ++it)
+	{
+		if (it->first > date)
+		{
+			it--;
+			price = it->second;
+			return (std::strtof(amount.c_str(), NULL) * price);
+		}
+	}
+	it = dataBase.end();
+	it--;
+	price = it->second;
+	return (std::strtof(amount.c_str(), NULL) * price);
 	return (0);
 }
 
@@ -88,9 +149,13 @@ static void	putLine(std::map<std::string, float> &dataBase, std::string date, st
 	if (atof(amount.c_str()) < 0)
 		std::cout << RED << "Error" << WHITE << ": not a positive number." << WHITEENDL;
 	else if (badDate(date))
-		std::cout << RED << "Error" << WHITE << ": bad int put => " << RED << date << WHITEENDL;
-	//else
-	//	std::cout << data << " => " << amount << " = " << std::strtof(amount) * price << std::endl;
+		std::cout << RED << "Error" << WHITE << ": bad input => " << RED << date << WHITEENDL;
+	else if (std::atof(amount.c_str()) > 1000)
+		std::cout << RED << "Error" << WHITE << ": too large number." << WHITEENDL;
+	else if (std::atof(amount.c_str()) < 0)
+		std::cout << RED << "Error" << WHITE << ": too low number." << WHITEENDL;
+	else
+		std::cout << date << " => " << amount << " = " << findPrice(dataBase, date, amount) << WHITEENDL;
 }
 
 bool	putLines(std::map<std::string, float> &dataBase, char *fileName)
