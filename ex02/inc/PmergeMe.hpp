@@ -5,6 +5,9 @@
 # include <vector>
 # include <deque>
 # include <cstdlib>
+# include <ctime>
+# include <algorithm>
+# include <cmath>
 
 # define WHITEENDL   std::endl << WHITE
 # define BLACK			"\033[0m\033[30m"
@@ -26,6 +29,57 @@
 
 bool	fillNumbers(std::vector<int> &numbers, int argc, char **argv);
 void	put(std::vector<int> &v);
+void	put(std::deque<int> &v);
 
+template<typename T>
+static void	insertSort(T start, T end)
+{
+	size_t	nbToInsert;
+	T		tmp;
+	T		startCopy(start);
 
+	start++;
+	while (start != end)
+	{
+		tmp = start;
+		nbToInsert = *tmp;
+		while (tmp != startCopy && (int)*(tmp - 1) > (int)nbToInsert)
+		{
+			*tmp = *(tmp - 1); // move the further value on the right by copying it
+			tmp--;
+		}
+		*tmp = nbToInsert; //insert the number in the right place
+		start++;
+	}
+}
+
+template<typename T>
+void	mergeInsertSort(T &container, size_t sizeToInsertSort)
+{
+	size_t	midle;
+	size_t	size = container.size();
+
+	if (size < sizeToInsertSort) //stop recursive condition
+	{
+		insertSort(container.begin(), container.end());
+		return ;
+	}
+
+	midle = size / 2;
+
+	T	left(container.begin(), container.begin() + midle);
+	T	right(container.begin() + midle, container.end());
+
+	mergeInsertSort(left, sizeToInsertSort);
+	mergeInsertSort(right, sizeToInsertSort);
+	/*std::cout << "left : ";
+	put(left);
+	std::cout << std::endl;
+	std::cout << "right : ";
+	put(right);*/
+	std::merge(left.begin(), left.end(), right.begin(), right.end(), container.begin()); // insert the values in container when they are sorted
+	/*std::cout << std::endl << "result : ";
+	put(container);
+	std::cout << std::endl << " ---- "<< std::endl;*/
+}
 #endif

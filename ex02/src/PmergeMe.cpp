@@ -36,3 +36,12 @@ void	put(std::vector<int> &v)
 		std::cout << WHITE << *it << " ";
 	}
 }
+
+void	put(std::deque<int> &v)
+{
+	for (std::deque<int>::iterator it = v.begin();
+	it != v.end(); it++)
+	{
+		std::cout << WHITE << *it << " ";
+	}
+}
