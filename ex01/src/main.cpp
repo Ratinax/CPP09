@@ -8,7 +8,6 @@ int	main(int argc, char **argv)
 	if (!valid_args(argc, argv))
 		return (1);
 	std::stack<int> numbers;
-	fillStack(numbers, argv[1]);
 	for (int i = 0; argv[1][i]; i++)
 	{
 		if (argv[1][i] == '-' || argv[1][i] == '+'
@@ -20,20 +19,22 @@ int	main(int argc, char **argv)
 			numbers.pop();
 			// std::cout << BLUE << tmp << WHITE << " " << argv[1][i] << " " << CYAN << tmp2 << WHITEENDL;
 			if (argv[1][i] == '-')
-				numbers.push(tmp - tmp2);
+				numbers.push(tmp2 - tmp);
 			else if (argv[1][i] == '+')
-				numbers.push(tmp + tmp2);
+				numbers.push(tmp2 + tmp);
 			else if (argv[1][i] == '*')
-				numbers.push(tmp * tmp2);
-			else if (argv[1][i] == '/' && tmp2 != 0)
-				numbers.push(tmp / tmp2);
-			else if (argv[1][i] == '/' && tmp2 == 0)
+				numbers.push(tmp2 * tmp);
+			else if (argv[1][i] == '/' && tmp != 0)
+				numbers.push(tmp2 / tmp);
+			else if (argv[1][i] == '/' && tmp == 0)
 			{
 				std::cout << RED << "Error" << WHITE << ": division per 0 !" << WHITEENDL;
 				return (1);
 			}
 			// std::cout << MAGENTA << numbers.top() << WHITEENDL;
 		}
+		else if (isdigit(argv[1][i]))
+			numbers.push(argv[1][i] - 48);
 	}
 	std::cout << GREEN << numbers.top() << WHITEENDL;
 	return (0);

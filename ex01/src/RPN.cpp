@@ -17,6 +17,8 @@ static bool	validNbOperator(char *str)
 		if (nbDigit <= nbOperator && nbDigit != 0 && nbOperator != 0)
 			return (0);
 	}
+	if (nbDigit - 1 != nbOperator)
+		return (0);
 	return (1);
 }
 
@@ -51,13 +53,4 @@ bool	valid_args(int argc, char **argv)
 		}
 	}
 	return (1);
-}
-
-void	fillStack(std::stack<int> &stack, char *str)
-{
-	for (int i = std::string(str).length() - 1; i > -1; i--)
-	{
-		if (isdigit(str[i]))
-			stack.push(str[i] - 48);
-	}
 }

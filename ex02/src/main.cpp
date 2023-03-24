@@ -12,7 +12,7 @@ int	main(int argc, char **argv)
 	put(vectorNumbers);					// put before sorted
 	std::cout << WHITEENDL;
 
-	std::deque<size_t>	dequeNumbers(vectorNumbers.begin(), vectorNumbers.end()); // fille the deque with numbers
+	std::deque<int>	dequeNumbers(vectorNumbers.begin(), vectorNumbers.end()); // fille the deque with numbers
 
 	start = clock();
 	mergeInsertSort(vectorNumbers, std::sqrt(vectorNumbers.size()) + 1); // Algorithme on vector

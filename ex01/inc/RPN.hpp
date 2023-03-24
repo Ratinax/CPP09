@@ -25,5 +25,4 @@
 # define BOLDWHITE		"\033[1m\033[37m"
 
 bool	valid_args(int argc, char **argv);
-void	fillStack(std::stack<int> &stack, char *str);
 #endif

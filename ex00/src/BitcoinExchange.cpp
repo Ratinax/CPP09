@@ -132,8 +132,6 @@ static void	putLine(std::map<std::string, float> &dataBase, std::string date, st
 		std::cout << RED << "Error" << WHITE << ": bad input => " << RED << date << WHITEENDL;
 	else if (std::atof(amount.c_str()) > 1000)
 		std::cout << RED << "Error" << WHITE << ": too large number." << WHITEENDL;
-	else if (std::atof(amount.c_str()) < 0)
-		std::cout << RED << "Error" << WHITE << ": too low number." << WHITEENDL;
 	else
 		std::cout << date << " => " << amount << " = " << findPrice(dataBase, date, amount) << WHITEENDL;
 }
