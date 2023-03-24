@@ -57,24 +57,6 @@ bool	getDataBaseMap(std::map<std::string, float> &dataBase)
 	return (true);
 }
 
-static bool wrongFormat(std::string date)
-{
-	if (date.length() != 10)
-		return (1);
-	if (date[0] != '2'
-		|| date[1] != '0'
-		|| (date[2] > '2' || date[2] < '0')
-		|| !isdigit(date[3])
-		|| date[4] != '-'
-		|| (date[5] > '1' || date[5] < '0')
-		|| !isdigit(date[6])
-		|| date[7] != '-'
-		|| (date[8] > '3' || date[8] < '0')
-		|| !isdigit(date[9]))
-		return (1);
-	return (0);
-}
-
 static bool isLeap(std::string year)
 {
 	int yearInt = std::atoi(year.c_str());
@@ -107,8 +89,6 @@ static bool goodDayAmount(std::string year, std::string month, std::string day)
 
 static bool	badDate(std::string date)
 {
-	if (wrongFormat(date))
-		return (1);
 	std::string	year, month, day, month_day;
 	split(date, year, month_day, "-");
 	split(month_day, month, day, "-");
@@ -129,7 +109,7 @@ static float	findPrice(std::map<std::string, float> &dataBase, std::string date,
 	for (std::map<std::string, float>::iterator it = dataBase.begin();
 		it != dataBase.end(); ++it)
 	{
-		if (it->first > date)
+		if (it->first > date || it->first.length() > date.length())
 		{
 			it--;
 			price = it->second;
